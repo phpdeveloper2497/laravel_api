@@ -4,11 +4,13 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class   User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -18,9 +20,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'lastname',
         'email',
         'password',
+        'phone',
     ];
 
     /**
@@ -42,4 +46,36 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function favorites() :BelongsToMany
+    {
+        return $this->belongsToMany(Product::class);
+    }
+
+    public function hasFavorite($favorite_id)
+    {
+        return $this->favorites()->where('product_id',$favorite_id)->exists();
+    }
+    public function addresses() :HasMany
+    {
+        return $this->HasMany(UserAddress::class);
+    }
+
+    public function orders() :HasMany
+    {
+        return $this->HasMany(Order::class);
+    }
+
+    public function reviews() :HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+
 }
