@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Stock;
 use App\Models\User;
 use App\Models\UserAddress;
+use Illuminate\Http\JsonResponse;
 
 class OrderController extends Controller
 {
@@ -19,9 +20,16 @@ class OrderController extends Controller
         $this->middleware('auth:sanctum');
     }
 
-    public function index()
+    public function index() :JsonResponse
     {
-        return auth()->user()->orders;
+        if(request()->has('status_id'))
+        {
+            return $this->response(OrderResource::collection(
+                auth()->user()->orders()->where('status_id', request('status_id'))->paginate(10)
+            ));
+        }
+        return $this->response(OrderResource::collection(
+            auth()->user()->orders()->paginate(10)));
     }
 
 
@@ -81,21 +89,18 @@ class OrderController extends Controller
                 }
             }
 
-            return 'success';
+            return $this->success('Order created', $order);
         }else
         {
-            return response($notFoundProduct =[
-                'success' =>false,
-                'message' => 'Some product was not found or does not have inventory',
-                'not_found_products' =>$notFoundProduct,
-            ]);
+            return $this->error('Some product was not found or does not have inventory', $notFoundProduct);
+
         }
         return "Something went wrong, we can’t put things in order";
     }
 
-    public function show(Order $order)
+    public function show(Order $order) :JsonResponse
     {
-        return new OrderResource($order);
+        return $this->response(new OrderResource($order));
     }
 
     public function edit(Order $order)

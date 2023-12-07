@@ -17,8 +17,8 @@ class StoreUserAddressRequest extends FormRequest
         return [
             'latitude' =>'required',
             'longitude' =>'required',
-            'district' =>'required|',
-            'region' =>'required|',
+            'district' =>'required',
+            'region' =>'required',
             'street' =>'required',
             'home' =>'nullable',
 

@@ -15,7 +15,7 @@ class UserAddress extends Model
         'latitude',
         'longitude',
         'region',
-        'destrict',
+        'district',
         'street',
         'home'
     ];

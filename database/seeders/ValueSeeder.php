@@ -2,19 +2,20 @@
 
 namespace Database\Seeders;
 
+use App\Models\Attribute;
 use App\Models\Value;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ValueSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+
     public function run(): void
     {
-        Value::create([
-            'attribute_id' =>1,
+
+    $attribute = Attribute::find(1);
+
+        $attribute->values()->create([
             'name' =>[
                 'en' => 'red',
                 'ru' => 'красный',
@@ -22,8 +23,7 @@ class ValueSeeder extends Seeder
             ],
         ]);
 
-        Value::create([
-            'attribute_id' =>1,
+       $attribute->values()->create([
             'name' =>[
                 'en' => 'yellow',
                 'ru' => 'желтый',
@@ -31,8 +31,7 @@ class ValueSeeder extends Seeder
             ],
         ]);
 
-        Value::create([
-            'attribute_id' =>1,
+        $attribute->values()->create([
             'name' =>[
                 'en' => 'white',
                 'ru' => 'белый',
@@ -40,8 +39,9 @@ class ValueSeeder extends Seeder
             ],
         ]);
 
-        Value::create([
-            'attribute_id' =>2,
+        $attribute = Attribute::find(2);
+
+        $attribute->values()->create([
             'name' =>[
                 'en' => 'MDF',
                 'ru' => 'МДФ',
@@ -49,8 +49,7 @@ class ValueSeeder extends Seeder
             ],
         ]);
 
-        Value::create([
-            'attribute_id' =>2,
+        $attribute->values()->create([
             'name' =>[
                 'en' => 'LDSP',
                 'ru' => 'ЛДСП',

@@ -5,15 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
+use Illuminate\Http\JsonResponse;
 
 class ReviewController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    public function __construct()
+    {
+        return $this->middleware('auth:sanctum');
+    }
+
     public function index()
     {
-        //
+//        return $this->response(auth()->user()->reviews()->paginate(10));
+        return auth()->user()->reviews()->with('product')->paginate(10);
     }
 
     /**
