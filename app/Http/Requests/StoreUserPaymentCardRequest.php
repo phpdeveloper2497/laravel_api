@@ -6,23 +6,31 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUserPaymentCardRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+
         ];
+//        return [
+//            'name' => ['required','string','max:255'],
+//            'number' => ['required','string','max:255'],
+//            'exp_date' => ['required','string','max:255'],
+//            'holder_name' => ['required','string','max:255'],
+//            'payment_card_type_id' => ['required','string','max:255'],
+//        ];
+//        return [
+//            "name" => "required",
+//            "number" => "required",
+//            "exp_date" => "required",
+//            "holder_name" => "required",
+//            "payment_card_type_id" => "required",
+//            "last_four_number" => "required",
+//        ];
     }
 }
