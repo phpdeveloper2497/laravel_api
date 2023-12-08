@@ -29,11 +29,35 @@ class CategorySeeder extends Seeder
             ],
         ]);
 
-        Category::create([
+        $categoryArmchair = Category::create([
             'name' => [
                 'en' => 'Armchair',
                 'ru' =>'Кресло',
                 'uz' =>'Kreslo',
+            ],
+        ]);
+
+        $categoryArmchair->ChildCategories()->create([
+            'name' => [
+                'en' => 'Gaming',
+                'ru' =>'Игровой',
+                'uz' =>'O\'yin',
+            ],
+        ]);
+
+        $officeChildCategory = $categoryArmchair->ChildCategories()->create([
+            'name' => [
+                'en' => 'Office',
+                'ru' =>'Кресло',
+                'uz' =>'Idora',
+            ],
+        ]);
+
+        $officeChildCategory->ChildCategories()->create([
+            'name' => [
+                'en' => 'Maarten soft',
+                'ru' =>'Мартен мягкий',
+                'uz' =>'Maarten yumshoq',
             ],
         ]);
 
