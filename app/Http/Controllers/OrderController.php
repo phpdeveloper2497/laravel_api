@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Stock;
 use App\Models\User;
 use App\Models\UserAddress;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 
 class OrderController extends Controller
@@ -18,6 +19,7 @@ class OrderController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum');
+        $this->authorizeResource(Order::class, 'order');
     }
 
     public function index() :JsonResponse
@@ -55,7 +57,7 @@ class OrderController extends Controller
                 $productResource = new ProductResource($productWithStock);
 
 //            dd($productResource['price']);
-                $sum += $productResource['price'];
+                $sum += $productResource['price']*$requestProduct['quantity'];
                 $product_list[] = $productResource->resolve();
             }else
             {
@@ -116,9 +118,11 @@ class OrderController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @throws AuthorizationException
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return 1;
     }
 }

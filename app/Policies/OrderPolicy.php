@@ -29,7 +29,7 @@ class OrderPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasRole('customer') || $user->hasPermissionTo('order:create');
     }
 
     /**
@@ -37,15 +37,20 @@ class OrderPolicy
      */
     public function update(User $user, Order $order): bool
     {
-        //
+        return $order->user_id === $user->id || $user->hasPermissionTo('order:update');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
+
     public function delete(User $user, Order $order): bool
     {
-        //
+        if ($user->hasRole('customer'))
+        {
+            return $order->user_id === $user->id && in_array($order->status_id, [1]);
+        }else{
+            return $user->hasPermissionTo('order:delete');
+
+        }
+
     }
 
     /**
@@ -53,7 +58,7 @@ class OrderPolicy
      */
     public function restore(User $user, Order $order): bool
     {
-        //
+        return  $user->hasPermissionTo('order:restore');
     }
 
     /**

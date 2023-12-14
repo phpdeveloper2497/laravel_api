@@ -45,6 +45,7 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
+//        return $request->user()->getAllPermissions();
         return $this->response(new UserResource($request->user()));
     }
 
@@ -73,6 +74,5 @@ class AuthController extends Controller
 //
 //        return redirect()->back()->with("success", "Password successfully changed!");
     }
-
 
 }

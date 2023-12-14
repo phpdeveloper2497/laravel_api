@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,28 +14,50 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = User::create([
+        $user = User::create([
 
-        'firstname' => 'admin',
-        'lastname' => 'admin',
-        'email' => 'admin@admin.com',
-        'password' => Hash::make('password'),
-        'phone' => '+998999999999',
-       ]);
-
-        $admin->roles()->attach(1);
-
-        $admin = User::create([
-
-            'firstname' => 'developer',
-            'lastname' => 'developer',
-            'email' => 'developer@developer.com',
+            'firstname' => 'admin',
+            'lastname' => 'vladets',
+            'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
-            'phone' => '+998989999999',
+            'phone' => '+9989599999',
         ]);
+        $user->assignRole('admin');
 
-        $admin->roles()->attach(2);
+        $user = User::create([
 
-        User::factory()->count(10)->hasAttached(Role::find(3))->create();
+            'firstname' => 'editor',
+            'lastname' => 'o\'zgartiruvchi',
+            'email' => 'editor@editor.com',
+            'password' => Hash::make('password'),
+            'phone' => '+99899999999',
+        ]);
+        $user->assignRole('editor');
+
+        $user = User::create([
+
+            'firstname' => 'shop',
+            'lastname' => 'manager',
+            'email' => 'shop@manager.com',
+            'password' => Hash::make('password'),
+            'phone' => '+9989008199',
+        ]);
+        $user->assignRole('shop-manager');
+
+        $user = User::create([
+
+            'firstname' => 'customer',
+            'lastname' => 'xaridor',
+            'email' => 'customer@customer.com',
+            'password' => Hash::make('password'),
+            'phone' => '+9989008299',
+        ]);
+        $user->assignRole('customer');
+
+        $users = User::factory()->count(10)->create();
+
+        foreach ($users as $user) {
+            $user->assignRole('customer');
+        }
     }
 }
