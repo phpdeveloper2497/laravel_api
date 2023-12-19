@@ -19,7 +19,7 @@ class DeliveryMethod extends Model
     ];
 
 public array $translatable = ['name', 'estimated_time'];
-
+se
     public function orders() :HasMany
     {
         return $this->hasMany(Order::class);
