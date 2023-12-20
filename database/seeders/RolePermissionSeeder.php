@@ -141,7 +141,7 @@ class RolePermissionSeeder extends Seeder
         ]);
 
         $role->syncPermissions($helpDeskPermissions);
-        $role->givePermissionTo($statsPermissions);
+        $role->givePermissionTo($analysPermissions);
 
     }
 }
