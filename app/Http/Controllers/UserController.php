@@ -26,8 +26,8 @@ class UserController extends Controller
         Gate::authorize('user:delete');
 
 //        dd($user);
-//        Storage::delete($user->photos/*()->pluck('path')*/);
-//        $user->photos()->delete();
+            Storage::delete($user->photos/*()->pluck('path')*/);
+        $user->photos()->delete();
         $user->delete();
         return $this->success('user deleted');
     }

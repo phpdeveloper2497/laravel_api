@@ -11,7 +11,7 @@ class Value extends Model
 {
     use HasFactory, HasTranslations;
 
-    protected $fillable = ['attribute_id', 'name'];
+    protected $fillable = ['attribute_id', 'name', 'addition_cost'];
 
     public array $translatable = ["name"];
 

@@ -15,13 +15,12 @@ return new class extends Migration
             $table->id();
             $table->morphs('valuable');
             $table->string('name');
+            $table->unsignedBigInteger('addition_cost')->nullable(); //material yoki biror xususiyati uchun qo'shiladigan sum
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('values');

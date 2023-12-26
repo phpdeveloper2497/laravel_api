@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->json('attributes')->nullable();
             $table->integer('quantity')->default(1);
+            $table->unsignedBigInteger('addition_cost')->default(0)->nullable(); //material yoki biror xususiyati uchun qo'shiladigan sum
             $table->timestamps();
         });
     }

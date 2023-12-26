@@ -23,7 +23,7 @@ class ProductPhotoController extends Controller
 
     public function store(StoreProductPhotoRequest $request, Product $product)
     {
-        foreach ($request->photos as $photo) {
+        foreach ((array)  $request->photos as $photo) {
             $path = $photo->store('products/' . $product->id, 'public');
             $full_name = $photo->getClientOriginalName();
 
@@ -40,6 +40,7 @@ class ProductPhotoController extends Controller
         Gate::authorize('product:delete');
 
         Storage::delete($photo->path);
+
         $photo->delete();
 
         return $this->success('Product photo deleted successfully');

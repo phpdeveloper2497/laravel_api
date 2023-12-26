@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\ProductResource;
+use App\Models\DeliveryMethod;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
@@ -41,6 +42,7 @@ class OrderController extends Controller
         $sum = 0;
         $product_list = [];
         $notFoundProduct = [];
+        $deliveryMethod = DeliveryMethod::findOrFail($request->delivery_method_id);
 
         $address = UserAddress::find($request->address_id);
 
@@ -54,15 +56,13 @@ class OrderController extends Controller
                 $product->stocks()->find($requestProduct['stock_id'])->quantity >= $requestProduct['quantity']
             ) {
 
-                /*
-                 * Discount price
-                 * Shipping fee
-                 * Attribute price
-                 */
+
                 $productWithStock = $product->withStock($requestProduct['stock_id']);
                 $productResource = (new ProductResource($productWithStock))->resolve();
 
-                $sum += ($productResource['discountedPrice'] ?? $productResource['price'] ) /** $requestProduct['quantity']*/;
+                $sum += ($productResource['discountedPrice'] ?? $productResource['price'] ) * $requestProduct['quantity'];
+                $sum += $productWithStock->stocks[0]->addition_cost;
+
                 $product_list[] = $productResource;
             }else
             {
@@ -73,7 +73,7 @@ class OrderController extends Controller
 
         if ($notFoundProduct ===[] && $product_list !== [] && $sum !==0)
         {
-
+                $sum += $deliveryMethod->delivery_price;
 //         TODO  add status of order
 
             $order = auth()->user()->orders()->create([

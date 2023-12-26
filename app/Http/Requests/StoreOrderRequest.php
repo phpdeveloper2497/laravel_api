@@ -19,8 +19,7 @@ class StoreOrderRequest extends FormRequest
             'payment_type_id' =>'required|numeric',
             'product_list' =>'required',
             'product_list.*.product_id' =>'required|numeric',
-            'product_list.*.stock_id' =>'nullable|numeric',+
-
+            'product_list.*.stock_id' =>'nullable|numeric',
             'product_list.*.quantity' =>'required|numeric',
             'comment' =>'nullable|max:500',
 

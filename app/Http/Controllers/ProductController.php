@@ -43,7 +43,8 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         Gate::authorize('product:delete');
-        Storage::delete($product->photos()->pluck('path')->toArray());
+        $storage = Storage::delete($product->photos()->pluck('path')->toArray());
+//        Storage::deleteDirectory('/storage/app/public/products/60');
         $product->photos()->delete();
         $product->delete();
 

@@ -4,25 +4,23 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateDiscountRequest extends FormRequest
+class AssignRoleToUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->can('role:assign');
     }
 
 
     public function rules(): array
     {
         return [
-            'name' => 'nullable|string',
-            'percent' => 'required_without:sum',
-            'sum' => 'required_without:percent',
-            'from' => 'nullable',
-            'to' => 'nullable',
+            "user_id" =>"required",
+            "role_id" =>"required",
+
         ];
     }
 }

@@ -44,7 +44,8 @@ class ProductSeeder extends Seeder
                         'attribute_id' =>2,
                         'value_id' =>rand(4,5)
                     ],
-                ])
+                ]),
+                'addition_cost' =>rand(10,15)
             ]);
 
             $product->stocks()->create([

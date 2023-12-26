@@ -2,19 +2,16 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
+
     public function toArray(Request $request): array
     {
-        if ($this->discount)
+        if ($this->getDiscount())
         {
             if($this->discount->sum)
             {
@@ -25,6 +22,7 @@ class ProductResource extends JsonResource
                 $this->discountedPrice = round($this->price * ((100 - $this->discount->percent)/100));
             }
         }
+//        dd($this->getDiscount());
 
         return [
             'id' => $this->id,
@@ -37,7 +35,7 @@ class ProductResource extends JsonResource
             'updated_at' => $this->updated_at,
             'order_quantity' => $this->when(isset($this->quantity), $this->quantity),
             'photos' =>  PhotoResource::collection($this->photos),
-            'discount' => $this->discount,
+            'discount' => $this->getDiscount(),
             'discountedPrice' => $this->discountedPrice ?? null,
         ];
     }

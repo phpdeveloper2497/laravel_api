@@ -19,6 +19,7 @@ class Stockresource extends JsonResource
         $result = [
             'stock_id' => $this->id,
             'quantity' => $this->quantity,
+            'addition_cost' =>  $this->addition_cost,
         ];
         return $this->getAttributes($result);
     }

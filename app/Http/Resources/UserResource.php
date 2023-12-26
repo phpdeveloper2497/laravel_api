@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             "phone" => $this->phone,
             "settings" => UserSettingResource::collection($this->settings),
             "roles" => $this->getRoleNames(),
+
             "photo" => $this->photos()->exists() ? Storage::url($this->photos()->first()->path) : null,
             "created_at" => $this->created_at,
         ];
