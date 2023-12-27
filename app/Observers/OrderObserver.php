@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Order;
+use Illuminate\Support\Facades\Notification;
 
 class OrderObserver
 {
@@ -19,7 +20,15 @@ class OrderObserver
      */
     public function updated(Order $order): void
     {
-        //
+        $notification = ucfirst($order->status->code);
+        $class = "App\Notifications\Order\\" . $notification;
+
+        if (class_exists($class))
+        {
+            Notification::send([$order->user], new $class($order));
+
+        }
+
     }
 
     /**

@@ -6,20 +6,19 @@ use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
-class Confirmed extends Notification
+class Delivered extends Notification
 {
     use Queueable;
 
 
     protected Order $order;
 
-
     /**
      * Create a new notification instance.
      */
     public function __construct(Order $order)
     {
-        $this->order = $order;
+        return $this->order = $order;
     }
 
     /**
@@ -37,9 +36,8 @@ class Confirmed extends Notification
      */
     public function toMail(object $notifiable)
     {
-        return (new \App\Mail\Order\Confirmed($this->order))
+        return (new \App\Mail\Order\Delivered($this->order))
             ->to($notifiable->email);
-
     }
 
 }

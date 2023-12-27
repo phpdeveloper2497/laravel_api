@@ -44,6 +44,15 @@ Route::get('products/{product}/similar', [ProductController::class, 'similar']);
 Route::post('roles/assign', [RoleController::class, 'assign']);
 Route::post('permissions/assign', [PermissionController::class, 'assign']);
 
+//Status bo'yicha Mail ga jo'natilgan notification lar ni tekshirish uchun route
+/*Route::get('test', function(){
+    $order = \App\Models\Order::find(1);
+    $order->update(['status_id' => 9]);
+    dd($order->status_id);
+
+//    dd($class($order));
+});*/
+
 
 Route::apiResources([
     'users' => UserController::class,

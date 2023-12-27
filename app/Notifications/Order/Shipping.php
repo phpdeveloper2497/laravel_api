@@ -4,22 +4,21 @@ namespace App\Notifications\Order;
 
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class Confirmed extends Notification
+class Shipping extends Notification
 {
     use Queueable;
 
-
     protected Order $order;
-
 
     /**
      * Create a new notification instance.
      */
     public function __construct(Order $order)
     {
-        $this->order = $order;
+        return $this->order = $order;
     }
 
     /**
@@ -37,9 +36,9 @@ class Confirmed extends Notification
      */
     public function toMail(object $notifiable)
     {
-        return (new \App\Mail\Order\Confirmed($this->order))
+        return (new \App\Mail\Order\Shipping($this->order))
             ->to($notifiable->email);
-
     }
+
 
 }
