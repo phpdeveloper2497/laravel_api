@@ -6,13 +6,16 @@ use App\Http\Resources\UserPaymentCardResource;
 use App\Models\UserPaymentCard;
 use App\Http\Requests\StoreUserPaymentCardRequest;
 use App\Http\Requests\UpdateUserPaymentCardRequest;
+use App\Repositories\PaymentCardRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class UserPaymentCardController extends Controller
 {
 
-    public function __construct()
+    public function __construct(
+        protected PaymentCardRepository $paymentCardRepository,
+    )
     {
         $this->middleware('auth:sanctum');
     }
@@ -26,14 +29,7 @@ class UserPaymentCardController extends Controller
     public function store(StoreUserPaymentCardRequest $request)
     {
 
-        $card = auth()->user()->paymentCards()->create([
-            "name" => encrypt($request->name),
-            "number" => encrypt($request->number),
-            "exp_date" => encrypt($request->exp_date),
-            "holder_name" => encrypt($request->holder_name),
-            "last_four_number" => encrypt(substr($request->number, -4)),
-            "payment_card_type_id" => $request->payment_card_type_id,
-        ]);
+        $card = $this->paymentCardRepository->savePaymentCard($request);
         return $this->success('Added card', $card);
     }
 
@@ -47,4 +43,5 @@ class UserPaymentCardController extends Controller
     {
         //
     }
+
 }

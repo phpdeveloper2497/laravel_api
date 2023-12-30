@@ -6,6 +6,8 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\AuthService;
+use App\Services\FileService;
 use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,15 +18,15 @@ use function Laravel\Prompts\password;
 
 class AuthController extends Controller
 {
+
+    public function __construct(
+        protected AuthService $authService,
+        protected FileService $fileService,
+    ){}
+
     public function login(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
-        }
+        $user = $this->authService->checkCredentials($request);
 
         return $this->success(
             '',
@@ -33,10 +35,10 @@ class AuthController extends Controller
 
     }
 
-
     public function logout()
     {
-
+        auth()->user()->tokens()->delete();
+        return $this->success('User logged out');
     }
 
     public function register(RegisterRequest $request)
@@ -44,23 +46,15 @@ class AuthController extends Controller
         $data = $request->validated();
         $data['password'] = Hash::make($request->password);
         $user = User::create($data);
-
         $user->assignRole('customer');
-        if ($request->has('photo'))
-        {
-            $path = $request->file('photo')->store('users/'.$user->id,'public');
-            $user->photos()->create([
-                'full_name' =>$request->file('photo')->getClientOriginalName(),
-                'path' =>$path,
-            ]);
-        }
 
+        $this->fileService->checkUserPhoto($request, $user);
 
         auth()->login($user);
 
         return $this->success('user created',
             ['token' => $user->createToken($request->email)->plainTextToken
-        ]);
+            ]);
     }
 
     public function user(Request $request)
